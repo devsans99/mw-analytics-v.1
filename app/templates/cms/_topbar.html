@@ -1,0 +1,19 @@
+<header class="border-b border-border bg-surface">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+    <a href="{{ url_for('cms.dashboard') }}" class="font-heading text-lg font-bold text-primary">
+      <i class="fa-solid fa-gauge-high mr-2"></i>{{ site_name }} CMS
+    </a>
+    <div class="flex items-center gap-3">
+      <a href="{{ url_for('site.home') }}" target="_blank" rel="noopener" class="hidden text-sm text-muted hover:text-text sm:inline">
+        View site <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+      </a>
+      {% include "partials/_theme_toggle.html" %}
+      {% if current_user.is_authenticated %}
+        <form method="post" action="{{ url_for('cms.logout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="text-sm text-muted hover:text-text">Log out</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</header>

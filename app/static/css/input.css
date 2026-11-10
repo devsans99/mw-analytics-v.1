@@ -1,0 +1,81 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@source "../../templates";
+@source "../js";
+
+/* Dark mode = `.dark` class on <html> (toggled by Alpine, see js/app.js). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Colour and font tokens are CSS variables rendered per request from the active
+ * palette (templates/partials/_theme_style.html), so changing the palette or
+ * fonts in the CMS needs no rebuild.
+ */
+@theme inline {
+  --color-primary: var(--c-primary);
+  --color-primary-contrast: var(--c-primary-contrast);
+  --color-accent: var(--c-accent);
+  --color-background: var(--c-background);
+  --color-surface: var(--c-surface);
+  --color-text: var(--c-text);
+  --color-muted: var(--c-muted);
+  --color-border: var(--c-border);
+  --font-heading: var(--f-heading);
+  --font-body: var(--f-body);
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--c-border);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--f-heading);
+  }
+  [x-cloak] {
+    display: none !important;
+  }
+}
+
+/* Typography plugin wired to the palette tokens. */
+.prose-theme {
+  --tw-prose-body: var(--c-text);
+  --tw-prose-headings: var(--c-text);
+  --tw-prose-lead: var(--c-muted);
+  --tw-prose-links: var(--c-primary);
+  --tw-prose-bold: var(--c-text);
+  --tw-prose-counters: var(--c-muted);
+  --tw-prose-bullets: var(--c-muted);
+  --tw-prose-hr: var(--c-border);
+  --tw-prose-quotes: var(--c-text);
+  --tw-prose-quote-borders: var(--c-border);
+  --tw-prose-captions: var(--c-muted);
+  --tw-prose-code: var(--c-text);
+  --tw-prose-pre-code: var(--c-text);
+  --tw-prose-pre-bg: var(--c-surface);
+  --tw-prose-th-borders: var(--c-border);
+  --tw-prose-td-borders: var(--c-border);
+}
+
+/* Quill (CMS rich text editor) adjustments for the palette / dark mode. */
+.ql-toolbar.ql-snow,
+.ql-container.ql-snow {
+  border-color: var(--c-border) !important;
+}
+.ql-editor.ql-blank::before {
+  color: var(--c-muted) !important;
+}
+.dark .ql-snow .ql-stroke {
+  stroke: var(--c-text);
+}
+.dark .ql-snow .ql-fill {
+  fill: var(--c-text);
+}
+.dark .ql-snow .ql-picker {
+  color: var(--c-text);
+}

@@ -1,0 +1,18 @@
+{# Shared layout for detail pages. Child templates set `back_endpoint` and `back_label`. #}
+{% extends "base.html" %}
+{% block title %}{{ item.title }} · {{ site_name }}{% endblock %}
+{% block content %}
+<article class="mx-auto max-w-3xl px-4 py-14">
+  <a href="{{ url_for(back_endpoint) }}" class="text-sm text-muted hover:text-primary"><i class="fa-solid fa-arrow-left mr-1"></i>{{ back_label }}</a>
+  <h1 class="mt-4 font-heading text-3xl font-bold md:text-4xl">{{ item.title }}</h1>
+  {% if item.date %}<time class="mt-2 block text-sm text-muted">{{ item.date.strftime("%d %B %Y") }}</time>{% endif %}
+  {% if item.image %}<img src="{{ upload_url(item.image) }}" alt="{{ item.title }}" class="mt-8 w-full rounded-xl object-cover">{% endif %}
+  {% if item.summary %}<p class="mt-6 text-lg text-muted">{{ item.summary }}</p>{% endif %}
+  <div class="prose prose-theme mt-8 max-w-none">{{ item.body|safe }}</div>
+  {% if item.external_url %}
+    <a href="{{ item.external_url }}" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-contrast hover:opacity-90">
+      Visit link <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+    </a>
+  {% endif %}
+</article>
+{% endblock %}

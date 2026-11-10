@@ -1,0 +1,19 @@
+{% extends "cms/base.html" %}
+{% block cms_title %}Dashboard{% endblock %}
+{% block cms_content %}
+<h1 class="font-heading text-2xl font-semibold">Dashboard</h1>
+<div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  {% for key, cfg in sections.items() %}
+    <a href="{{ url_for('cms.content_list', section=key) }}" class="rounded-xl border border-border bg-surface p-5 hover:border-primary">
+      <p class="text-sm text-muted">{{ cfg.label }}</p>
+      <p class="mt-1 font-heading text-3xl font-bold">{{ counts[key] }}</p>
+    </a>
+  {% endfor %}
+</div>
+<div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  <a href="{{ url_for('cms.hero') }}" class="rounded-xl border border-border p-4 text-sm hover:border-primary">Edit home hero</a>
+  <a href="{{ url_for('cms.portfolio') }}" class="rounded-xl border border-border p-4 text-sm hover:border-primary">Edit portfolio</a>
+  <a href="{{ url_for('cms.contact') }}" class="rounded-xl border border-border p-4 text-sm hover:border-primary">Edit contact info</a>
+  <a href="{{ url_for('cms.theme_settings') }}" class="rounded-xl border border-border p-4 text-sm hover:border-primary">Theme &amp; fonts</a>
+</div>
+{% endblock %}

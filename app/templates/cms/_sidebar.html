@@ -1,0 +1,22 @@
+{% set links = [
+  ("Dashboard", "fa-gauge-high", url_for("cms.dashboard")),
+  ("Home Hero", "fa-image", url_for("cms.hero")),
+  ("Portfolio", "fa-user-tie", url_for("cms.portfolio")),
+  ("Services", "fa-briefcase", url_for("cms.content_list", section="services")),
+  ("Projects", "fa-diagram-project", url_for("cms.content_list", section="projects")),
+  ("Publications", "fa-file-lines", url_for("cms.content_list", section="publications")),
+  ("Books", "fa-book", url_for("cms.content_list", section="books")),
+  ("Media Coverage", "fa-newspaper", url_for("cms.content_list", section="media-coverage")),
+  ("Contact Info", "fa-address-book", url_for("cms.contact")),
+  ("Theme", "fa-palette", url_for("cms.theme_settings")),
+] %}
+<aside class="md:w-56 md:shrink-0">
+  <nav class="flex gap-1 overflow-x-auto md:sticky md:top-6 md:flex-col">
+    {% for label, icon, href in links %}
+      {% set active = request.path == href or (loop.index > 1 and request.path.startswith(href)) %}
+      <a href="{{ href }}" class="flex shrink-0 items-center gap-3 rounded-lg px-3 py-2 text-sm {{ 'bg-primary text-primary-contrast' if active else 'text-muted hover:bg-surface hover:text-text' }}">
+        <i class="fa-solid {{ icon }} w-4 text-center"></i>{{ label }}
+      </a>
+    {% endfor %}
+  </nav>
+</aside>

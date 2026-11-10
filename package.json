@@ -1,0 +1,20 @@
+{
+  "name": "mwa",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tailwindcss -i app/static/css/input.css -o app/static/css/output.css --minify",
+    "watch": "tailwindcss -i app/static/css/input.css -o app/static/css/output.css --watch",
+    "vendor": "node scripts/copy_vendor.mjs"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.5",
+    "@tailwindcss/typography": "^0.5.20",
+    "tailwindcss": "^4.3.5"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.3.1",
+    "alpinejs": "^3.17.5",
+    "quill": "^2.0.3"
+  }
+}

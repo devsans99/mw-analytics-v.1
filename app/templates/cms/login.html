@@ -1,0 +1,14 @@
+{% extends "cms/base.html" %}
+{% from "cms/_macros.html" import field, submit %}
+{% block cms_title %}Login{% endblock %}
+{% block cms_content %}
+<div class="mx-auto max-w-sm rounded-xl border border-border bg-surface p-6">
+  <h1 class="font-heading text-xl font-semibold">Sign in</h1>
+  <form method="post" class="mt-6 space-y-4" novalidate>
+    {{ form.hidden_tag() }}
+    {{ field(form.username) }}
+    {{ field(form.password) }}
+    {{ submit("Sign in") }}
+  </form>
+</div>
+{% endblock %}

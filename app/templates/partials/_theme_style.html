@@ -1,0 +1,12 @@
+<style>
+  :root {
+    {% for token, value in theme.light.items() %}--c-{{ token }}: {{ value }};
+    {% endfor %}--f-heading: {{ theme.heading_css|safe }};
+    --f-body: {{ theme.body_css|safe }};
+  }
+  .dark {
+    color-scheme: dark;
+    {% for token, value in theme.dark.items() %}--c-{{ token }}: {{ value }};
+    {% endfor %}
+  }
+</style>

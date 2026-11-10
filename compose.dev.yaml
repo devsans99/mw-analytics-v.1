@@ -1,0 +1,49 @@
+# Development (macOS / any): docker compose -f compose.dev.yaml up --build
+# Code is bind-mounted, Flask reloads on change, Tailwind rebuilds on change.
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-mwa}
+      POSTGRES_USER: ${POSTGRES_USER:-mwa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mwa}
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  web:
+    build:
+      context: .
+      target: runtime
+    command: sh -c "flask db upgrade && flask run --debug --host 0.0.0.0 --port 5000"
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-mwa}:${POSTGRES_PASSWORD:-mwa}@db:5432/${POSTGRES_DB:-mwa}
+      FLASK_DEBUG: "1"
+      TRUST_PROXY: "0"
+      SESSION_COOKIE_SECURE: "0"
+    volumes:
+      - .:/srv/mwa
+    ports:
+      - "5001:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  tailwind:
+    image: node:lts-slim
+    working_dir: /srv/mwa
+    command: sh -c "npm install && npm run vendor && npm run watch"
+    volumes:
+      - .:/srv/mwa
+      - node_modules:/srv/mwa/node_modules
+
+volumes:
+  pgdata_dev:
+  node_modules:

@@ -1,0 +1,45 @@
+{% extends "cms/base.html" %}
+{% block cms_title %}{{ cfg.label }}{% endblock %}
+{% block cms_content %}
+<div class="flex items-center justify-between">
+  <h1 class="font-heading text-2xl font-semibold">{{ cfg.label }}</h1>
+  <a href="{{ url_for('cms.content_new', section=section) }}" class="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-contrast hover:opacity-90">
+    <i class="fa-solid fa-plus mr-1"></i> New
+  </a>
+</div>
+
+{% if items %}
+  <div class="mt-6 overflow-x-auto rounded-xl border border-border">
+    <table class="w-full text-left text-sm">
+      <thead class="bg-surface text-muted">
+        <tr><th class="px-4 py-3">Title</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Status</th><th class="px-4 py-3 text-right">Actions</th></tr>
+      </thead>
+      <tbody class="divide-y divide-border">
+        {% for item in items %}
+          <tr>
+            <td class="px-4 py-3 font-medium">{{ item.title }}</td>
+            <td class="px-4 py-3 text-muted">{{ item.date.strftime("%d %b %Y") if item.date else "-" }}</td>
+            <td class="px-4 py-3">
+              <span class="rounded-full px-2 py-0.5 text-xs {{ 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400' if item.is_published else 'bg-surface text-muted' }}">
+                {{ "Published" if item.is_published else "Draft" }}
+              </span>
+            </td>
+            <td class="px-4 py-3">
+              <div class="flex items-center justify-end gap-3">
+                <a href="{{ url_for('cms.content_edit', section=section, item_id=item.id) }}" class="text-primary hover:underline">Edit</a>
+                <form method="post" action="{{ url_for('cms.content_delete', section=section, item_id=item.id) }}"
+                      x-data @submit="if (!confirm('Delete this item?')) $event.preventDefault()">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="mt-6 text-muted">No items yet.</p>
+{% endif %}
+{% endblock %}

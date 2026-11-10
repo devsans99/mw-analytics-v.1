@@ -1,0 +1,20 @@
+{# Generic form for single-row pages (hero, portfolio, contact info). #}
+{% extends "cms/base.html" %}
+{% from "cms/_macros.html" import field, submit %}
+{% block cms_title %}{{ title }}{% endblock %}
+{% block cms_content %}
+<h1 class="font-heading text-2xl font-semibold">{{ title }}</h1>
+<form method="post" enctype="multipart/form-data" class="mt-6 max-w-2xl space-y-5" novalidate>
+  {{ form.hidden_tag() }}
+  {% for f in form if f.type not in ("CSRFTokenField", "HiddenField", "SubmitField") and f.name != "remove_image" %}
+    {{ field(f) }}
+    {% if f.type == "FileField" %}
+      {% if current_image %}
+        <img src="{{ upload_url(current_image) }}" alt="" class="h-32 rounded-lg border border-border object-cover">
+        {{ field(form.remove_image) }}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {{ submit() }}
+</form>
+{% endblock %}

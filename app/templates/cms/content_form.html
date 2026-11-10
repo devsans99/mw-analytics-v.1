@@ -1,0 +1,25 @@
+{% extends "cms/base.html" %}
+{% from "cms/_macros.html" import field, editor, submit %}
+{% block cms_title %}{{ cfg.label }}{% endblock %}
+{% block cms_content %}
+<h1 class="font-heading text-2xl font-semibold">{{ "Edit" if item else "New" }} · {{ cfg.label }}</h1>
+<form method="post" enctype="multipart/form-data" class="mt-6 max-w-3xl space-y-5" novalidate>
+  {{ form.hidden_tag() }}
+  {{ field(form.title) }}
+  {{ field(form.slug, hint="Leave empty to generate from the title.") }}
+  {{ field(form.summary) }}
+  {% if cfg.detail %}{{ editor(form.body) }}{% endif %}
+  {{ field(form.image) }}
+  {% if item and item.image %}
+    <img src="{{ upload_url(item.image) }}" alt="" class="h-32 rounded-lg border border-border object-cover">
+    {{ field(form.remove_image) }}
+  {% endif %}
+  {{ field(form.date) }}
+  {{ field(form.external_url, hint="Optional link to the original source.") }}
+  {{ field(form.is_published) }}
+  <div class="flex items-center gap-4">
+    {{ submit() }}
+    <a href="{{ url_for('cms.content_list', section=section) }}" class="text-sm text-muted hover:text-text">Cancel</a>
+  </div>
+</form>
+{% endblock %}

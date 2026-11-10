@@ -1,0 +1,39 @@
+{% set items = [
+  ("Home", "site.home"),
+  ("Portfolio", "site.portfolio"),
+  ("Services", "site.services"),
+  ("Projects", "site.projects"),
+  ("Publications", "site.publications"),
+  ("Books", "site.books"),
+  ("Media Coverage", "site.media_coverage"),
+  ("Contact", "site.contact"),
+] %}
+<header class="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur" x-data="{ open: false }">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+    <a href="{{ url_for('site.home') }}" class="font-heading text-xl font-bold text-primary">{{ site_name }}</a>
+
+    <nav class="hidden items-center gap-5 text-sm lg:flex">
+      {% for label, endpoint in items %}
+        {% set href = url_for(endpoint) %}
+        {% set active = request.path == href or (href != "/" and request.path.startswith(href ~ "/")) %}
+        <a href="{{ href }}" class="{{ 'font-semibold text-primary' if active else 'text-muted hover:text-text' }}">{{ label }}</a>
+      {% endfor %}
+    </nav>
+
+    <div class="flex items-center gap-2">
+      {% include "partials/_theme_toggle.html" %}
+      <button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted lg:hidden"
+              @click="open = !open" aria-label="Toggle menu">
+        <i class="fa-solid" :class="open ? 'fa-xmark' : 'fa-bars'"></i>
+      </button>
+    </div>
+  </div>
+
+  <nav x-show="open" x-cloak class="border-t border-border bg-background px-4 py-3 lg:hidden">
+    <ul class="space-y-2 text-sm">
+      {% for label, endpoint in items %}
+        <li><a href="{{ url_for(endpoint) }}" class="block py-1 text-muted hover:text-text">{{ label }}</a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+</header>

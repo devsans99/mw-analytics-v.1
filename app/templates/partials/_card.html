@@ -1,0 +1,18 @@
+{# Expects `item`; optional `detail_endpoint` (links to the internal detail page, otherwise to item.external_url). #}
+{% set href = url_for(detail_endpoint, slug=item.slug) if detail_endpoint else item.external_url %}
+<article class="flex flex-col overflow-hidden rounded-xl border border-border bg-surface">
+  {% if item.image %}
+    <img src="{{ upload_url(item.image) }}" alt="{{ item.title }}" class="h-48 w-full object-cover" loading="lazy">
+  {% endif %}
+  <div class="flex flex-1 flex-col p-5">
+    {% if item.date %}<time class="text-xs text-muted">{{ item.date.strftime("%d %b %Y") }}</time>{% endif %}
+    <h2 class="mt-1 font-heading text-lg font-semibold">{{ item.title }}</h2>
+    {% if item.summary %}<p class="mt-2 text-sm text-muted">{{ item.summary }}</p>{% endif %}
+    {% if href %}
+      <a href="{{ href }}" {% if not detail_endpoint %}target="_blank" rel="noopener noreferrer"{% endif %}
+         class="mt-auto pt-4 text-sm font-medium text-primary hover:underline">
+        {{ "Read more" if detail_endpoint else "Visit link" }} <i class="fa-solid fa-arrow-right text-xs"></i>
+      </a>
+    {% endif %}
+  </div>
+</article>

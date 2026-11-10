@@ -1,0 +1,5 @@
+<button type="button" x-data="themeToggle()" @click="toggle()"
+        class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted hover:text-text"
+        :aria-label="dark ? 'Switch to light mode' : 'Switch to dark mode'">
+  <i class="fa-solid" :class="dark ? 'fa-sun' : 'fa-moon'"></i>
+</button>

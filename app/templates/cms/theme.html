@@ -1,0 +1,53 @@
+{% extends "cms/base.html" %}
+{% from "cms/_macros.html" import field, submit %}
+{% block cms_title %}Theme{% endblock %}
+{% block cms_content %}
+<h1 class="font-heading text-2xl font-semibold">Theme</h1>
+
+<h2 class="mt-8 font-heading text-lg font-semibold">Fonts</h2>
+<form method="post" class="mt-4 grid max-w-2xl gap-4 sm:grid-cols-2" novalidate>
+  {{ form.hidden_tag() }}
+  {{ field(form.font_heading) }}
+  {{ field(form.font_body) }}
+  <div class="sm:col-span-2">{{ submit("Save fonts") }}</div>
+</form>
+
+<div class="mt-10 flex items-center justify-between">
+  <h2 class="font-heading text-lg font-semibold">Colour palettes</h2>
+  <a href="{{ url_for('cms.palette_new') }}" class="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-contrast hover:opacity-90">
+    <i class="fa-solid fa-plus mr-1"></i> New palette
+  </a>
+</div>
+<div class="mt-4 grid gap-4 sm:grid-cols-2">
+  {% for palette in palettes %}
+    <div class="rounded-xl border p-4 {{ 'border-primary' if palette.is_active else 'border-border' }}">
+      <div class="flex items-center justify-between">
+        <p class="font-medium">{{ palette.name }}</p>
+        {% if palette.is_active %}<span class="rounded-full bg-primary px-2 py-0.5 text-xs text-primary-contrast">Active</span>{% endif %}
+      </div>
+      {% for mode in ("light", "dark") %}
+        <div class="mt-3 flex items-center gap-1">
+          <span class="w-12 text-xs text-muted">{{ mode|capitalize }}</span>
+          {% for token, value in palette[mode].items() %}
+            <span class="h-5 w-5 rounded border border-border" style="background: {{ value }}" title="{{ token }}"></span>
+          {% endfor %}
+        </div>
+      {% endfor %}
+      <div class="mt-4 flex items-center gap-3 text-sm">
+        <a href="{{ url_for('cms.palette_edit', palette_id=palette.id) }}" class="text-primary hover:underline">Edit</a>
+        {% if not palette.is_active %}
+          <form method="post" action="{{ url_for('cms.palette_activate', palette_id=palette.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="text-primary hover:underline">Activate</button>
+          </form>
+          <form method="post" action="{{ url_for('cms.palette_delete', palette_id=palette.id) }}"
+                x-data @submit="if (!confirm('Delete this palette?')) $event.preventDefault()">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="text-red-500 hover:underline">Delete</button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

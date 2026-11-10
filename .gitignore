@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+instance/
+.env
+
+node_modules/
+app/static/css/output.css
+app/static/vendor/
+app/static/uploads/*
+!app/static/uploads/.gitkeep
+
+.DS_Store
+.idea/
+.vscode/

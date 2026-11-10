@@ -1,0 +1,29 @@
+{% extends "cms/base.html" %}
+{% from "cms/_macros.html" import field, submit %}
+{% block cms_title %}Palette{% endblock %}
+{% block cms_content %}
+<h1 class="font-heading text-2xl font-semibold">{{ "New" if is_new else "Edit" }} palette</h1>
+<form method="post" class="mt-6 max-w-3xl space-y-6" novalidate>
+  {{ form.hidden_tag() }}
+  {{ field(form.name) }}
+  <div class="grid gap-6 md:grid-cols-2">
+    {% for mode in ("light", "dark") %}
+      <fieldset class="rounded-xl border border-border p-4">
+        <legend class="px-2 text-sm font-medium">{{ mode|capitalize }} mode</legend>
+        <div class="space-y-3">
+          {% for token in tokens %}
+            <label class="flex items-center justify-between gap-3 text-sm">
+              <span>{{ token|replace("-", " ")|capitalize }}</span>
+              <input type="color" name="{{ mode }}_{{ token }}" value="{{ values[mode][token] }}" class="h-8 w-14 cursor-pointer rounded border border-border bg-transparent">
+            </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+    {% endfor %}
+  </div>
+  <div class="flex items-center gap-4">
+    {{ submit() }}
+    <a href="{{ url_for('cms.theme_settings') }}" class="text-sm text-muted hover:text-text">Cancel</a>
+  </div>
+</form>
+{% endblock %}

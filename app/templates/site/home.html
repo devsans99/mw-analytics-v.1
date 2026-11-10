@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="bg-surface">
+  <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-20 md:grid-cols-2">
+    <div>
+      <h1 class="font-heading text-4xl font-bold leading-tight md:text-5xl">{{ hero.title if hero else site_name }}</h1>
+      {% if hero and hero.subtitle %}<p class="mt-5 text-lg text-muted">{{ hero.subtitle }}</p>{% endif %}
+      {% if hero and hero.button_text and hero.button_url %}
+        <a href="{{ hero.button_url }}" class="mt-8 inline-flex rounded-lg bg-primary px-6 py-3 font-medium text-primary-contrast hover:opacity-90">{{ hero.button_text }}</a>
+      {% endif %}
+    </div>
+    {% if hero and hero.image %}
+      <img src="{{ upload_url(hero.image) }}" alt="" class="w-full rounded-2xl object-cover shadow-lg">
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

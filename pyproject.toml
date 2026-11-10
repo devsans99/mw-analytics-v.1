@@ -1,0 +1,25 @@
+[project]
+name = "mwa"
+version = "0.1.0"
+description = "Consulting firm website (Flask + Alpine.js + Tailwind) with a custom CMS."
+requires-python = ">=3.13"
+dependencies = [
+    "flask>=3.1",
+    "flask-sqlalchemy>=3.1",
+    "flask-migrate>=4.1",
+    "flask-login>=0.6.3",
+    "flask-wtf>=1.2",
+    "flask-limiter>=3.12",
+    "pillow>=11.0",
+    "python-slugify>=8.0",
+    "python-dotenv>=1.0",
+    "gunicorn>=23.0",
+    "psycopg[binary]>=3.2",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

@@ -1,0 +1,9 @@
+<footer class="mt-16 border-t border-border bg-surface">
+  <div class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-muted md:flex-row md:items-center md:justify-between">
+    <p>&copy; {{ current_year }} {{ site_name }}. All rights reserved.</p>
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+      {% if contact.phone %}<span><i class="fa-solid fa-phone mr-2 text-primary"></i>{{ contact.phone }}</span>{% endif %}
+      {% if contact.email %}<a href="mailto:{{ contact.email }}" class="hover:text-text"><i class="fa-solid fa-envelope mr-2 text-primary"></i>{{ contact.email }}</a>{% endif %}
+    </div>
+  </div>
+</footer>

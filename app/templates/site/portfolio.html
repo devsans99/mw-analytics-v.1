@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Portfolio · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="mx-auto max-w-5xl px-4 py-14">
+  <h1 class="font-heading text-3xl font-bold md:text-4xl">Portfolio</h1>
+  {% if profile %}
+    <div class="mt-10 grid gap-10 md:grid-cols-3">
+      {% if profile.photo %}
+        <img src="{{ upload_url(profile.photo) }}" alt="{{ profile.name }}" class="w-full rounded-2xl object-cover md:col-span-1">
+      {% endif %}
+      <div class="{{ 'md:col-span-2' if profile.photo else 'md:col-span-3' }}">
+        <h2 class="font-heading text-2xl font-semibold">{{ profile.name }}</h2>
+        <p class="mt-1 text-primary">{{ profile.position }}</p>
+        <div class="prose prose-theme mt-6 max-w-none">{{ profile.bio|safe }}</div>
+        {% if profile.expertise %}
+          <ul class="mt-6 flex flex-wrap gap-2">
+            {% for skill in profile.expertise.split(",") if skill.strip() %}
+              <li class="rounded-full border border-border bg-surface px-3 py-1 text-sm">{{ skill.strip() }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        {% if profile.linkedin_url %}
+          <a href="{{ profile.linkedin_url }}" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center gap-2 text-sm text-primary hover:underline">
+            <i class="fa-brands fa-linkedin"></i> LinkedIn
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+    <p class="mt-10 text-muted">Nothing here yet.</p>
+  {% endif %}
+</section>
+{% endblock %}
